@@ -74,7 +74,7 @@ function addMessage(role, text) {
 
 
 // ============================================
-// BLOC 3 : Appeler l'API Claude
+// BLOC 3 : Appeler l'API Claude (via notre fonction sécurisée /api/chat)
 // ============================================
 
 async function askClaude() {
@@ -116,4 +116,19 @@ async function handleSend() {
   conversationHistory.push({ role: "assistant", content: reply });
 }
 
-document.getElementById("sendBtn").addEventLi
+document.getElementById("sendBtn").addEventListener("click", handleSend);
+
+document.getElementById("userInput").addEventListener("keydown", function(event) {
+  if (event.key === "Enter") {
+    handleSend();
+  }
+});
+
+async function startConversation() {
+  conversationHistory.push({ role: "user", content: "Bonjour" });
+  const reply = await askClaude();
+  addMessage("bot", reply);
+  conversationHistory.push({ role: "assistant", content: reply });
+}
+
+startConversation();
